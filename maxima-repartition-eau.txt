@@ -1,0 +1,15 @@
+solid(myT, myP, variant) :=
+	block ( distrib(x) := 1/(variant*sqrt(2*%pi))*exp(-(x-myT)^2/(2*variant^2)),
+		bfloat(integrate(distrib(x), x, -inf, 273.15) * 100 / (integrate(distrib(x), x, -inf, inf)))
+	)$
+
+liquid(myT, myP, variant) :=
+	block ( [vapor : 5132/(25.27877-log(myP))], distrib(x) := 1/(variant*sqrt(2*%pi))*exp(-(x-myT)^2/(2*variant^2)),
+		bfloat(integrate(distrib(x), x, 273.15, vapor) * 100 / (integrate(distrib(x), x, -inf, inf)))
+	)$
+
+gas(myT, myP, variant) :=
+	block ( [vapor : 5132/(25.27877-log(myP))], distrib(x) := 1/(variant*sqrt(2*%pi))*exp(-(x-myT)^2/(2*variant^2)),
+		bfloat(integrate(distrib(x), x, vapor, inf) * 100 / (integrate(distrib(x), x, -inf, inf)))
+	)$
+

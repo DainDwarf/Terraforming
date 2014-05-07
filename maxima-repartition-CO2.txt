@@ -1,0 +1,20 @@
+solid(myT, myP, variant) :=
+	block ( fusion : if (myP >= 518000) then 216.55 else 10.9207*log(myP)+72.8583,
+		distrib(x) := 1/(variant*sqrt(2*%pi))*exp(-(x-myT)^2/(2*variant^2)),
+		bfloat(integrate(distrib(x), x, -inf, fusion) * 100)
+	)$
+
+liquid(myT, myP, variant) :=
+	block ( [vapor : 5132/(25.27877-log(myP))],
+		distrib(x) := 1/(variant*sqrt(2*%pi))*exp(-(x-myT)^2/(2*variant^2)),
+		if(myP > 518000)
+			then bfloat(integrate(distrib(x), x, 216.55, vapor) * 100)
+			else 0
+	)$
+
+gas(myT, myP, variant) :=
+	block ( vapor : if(myP >= 518000) then 4.927+1922.8/(22.2363-log(myP)) else 10.9207*log(myP)+72.8583,
+		distrib(x) := 1/(variant*sqrt(2*%pi))*exp(-(x-myT)^2/(2*variant^2)),
+		bfloat(integrate(distrib(x), x, vapor, inf) * 100)
+	)$
+
